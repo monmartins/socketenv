@@ -76,5 +76,18 @@
             android:textOff="Off"
             android:textOn="On" />
 
+
+        <Switch
+            android:id="@+id/switchVentilador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:text="Ventilador"
+            android:textOff="Off"
+            android:textOn="On" />
+
+
+
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

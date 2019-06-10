@@ -26,17 +26,17 @@ public class Client
             { 
  
                 if(first) {
-                    dos.writeUTF("new-fan");
+                    dos.writeUTF("new-air");
                     first=false;
                 }
 
                 String received = dis.readUTF(); 
                 System.out.println(received); 
                 if(received.contains("1")) {
-                	System.out.println("Fan is on");
+                	System.out.println("Air is on");
                 }
                 if(received.contains("0")) {
-                	System.out.println("Fan is off");
+                	System.out.println("Air is off");
                 }
                 if(received.equals("Exit")) 
                 { 

@@ -26,17 +26,17 @@ public class Client
             { 
  
                 if(first) {
-                    dos.writeUTF("new-fan");
+                    dos.writeUTF("new-door");
                     first=false;
                 }
 
                 String received = dis.readUTF(); 
                 System.out.println(received); 
                 if(received.contains("1")) {
-                	System.out.println("Fan is on");
+                	System.out.println("Door is open");
                 }
                 if(received.contains("0")) {
-                	System.out.println("Fan is off");
+                	System.out.println("Door is closed");
                 }
                 if(received.equals("Exit")) 
                 { 
