@@ -150,15 +150,14 @@ class SendSocketTask extends AsyncTask<String, Integer, Integer> {
         try {
             DataOutputStream canalSaida = null;
             // getting localhost ip
-            InetAddress ip = InetAddress.getByName("192.168.0.9");
+            InetAddress ip = InetAddress.getByName("192.168.1.105");
 
             // establish the connection with server port 5056
             Socket socket = new Socket(ip, 5000);
 
             canalSaida = new DataOutputStream(socket.getOutputStream());
             canalSaida.writeUTF(sendCommand[0]);
-            canalSaida.writeUTF("Exit");
-            socket.close();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

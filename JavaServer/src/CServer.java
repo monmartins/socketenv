@@ -67,7 +67,7 @@ public class CServer  extends Thread implements MethodsServer{
   
                 // create a new thread object 
                 ClientHandler t = new ClientHandler(socket, dis, dos); 
-                if(!socket.getRemoteSocketAddress().toString().contains("127")) {
+                if(!socket.getRemoteSocketAddress().toString().contains("127")|| socket.getRemoteSocketAddress().toString().contains("192.168.1.106")) {
                     t.OutOrIn = true; //Out
                     
                     // Invoking the start() method 
@@ -94,31 +94,6 @@ public class CServer  extends Thread implements MethodsServer{
             } 
         } 
 	       
-//		try {
-//			socket = serverSocket.accept();
-//			System.out.println("Client connected");
-//
-//			String msg="";
-//			input = socket.getInputStream();
-//			System.out.println(input);
-//			while(!outWhile) {
-//				read_c = input.read();
-//				msg=msg+(char)read_c;
-//				if(msg.contains("END")) {
-//					System.out.println(msg);
-//					msg="";
-//				}
-//				if(msg.contains("OUT-SERVER")) {
-//					endServerConnection();
-//					msg="";
-//					outWhile=true;
-//				}
-//			}
-//			System.out.println("Out");
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}  
 		
 	}
 	public void sendServer(Socket socket,String msg) {
@@ -178,16 +153,21 @@ class ClientHandler extends Thread
      Iterator<Socket> socketAsIterator = CServer.mapSockets.get(option).iterator();
      while (socketAsIterator.hasNext()){
          DataOutputStream dos;
+         Socket sok = socketAsIterator.next();
 		try {
-			if(OutOrIn) {
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socketAsIterator.next().getOutputStream()));
-                out.write(value);
+ 			if(!sok.getRemoteSocketAddress().toString().contains("127")) {
+                System.out.println("Out");
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(sok.getOutputStream()));
+                out.write(value+"\n");
                 out.flush();
+			}else {
+
+            System.out.println("In");
+			dos = new DataOutputStream(sok.getOutputStream());
+			dos.writeUTF(value); 
 			}
-			if(!OutOrIn) {
-				dos = new DataOutputStream(socketAsIterator.next().getOutputStream());
-				dos.writeUTF(value); 
-			}
+    	 
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -207,17 +187,24 @@ class ClientHandler extends Thread
 
              // Ask user what he wants 
              dos.writeUTF("Welcome SmartHome"); 
-             if(OutOrIn) {
+        	 if(this.s.getRemoteSocketAddress().toString().contains("192.168.1.106")) {
+                 received = dis.readUTF();
+                 System.out.println("Remote");
+        	 }else {
+                 if(OutOrIn) {
 
-                 BufferedReader in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
-                 received = in.readLine();
-             }if(!OutOrIn) {
+                     System.out.println("Out");
+                     BufferedReader in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
+                     received = in.readLine();
+                 }if(!OutOrIn) {
+                     System.out.println("In");
 
-                 received = dis.readUTF(); 
-             }
-             System.out.println("Client response: " + received);
-             System.out.println("Client response: " + receivedArd);
+                     received = dis.readUTF(); 
+                 }
+        	 }
+
              // receive the answer from client
+             System.out.println("Client response: " + received);
 
              
              if(received.contains("new-")){
